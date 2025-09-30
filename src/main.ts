@@ -51,11 +51,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api/docs", app, document);
+  SwaggerModule.setup("", app, document);
 
   await app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}/${apiPrefix}`);
-    console.log(`📚 Swagger is available at http://localhost:${PORT}/docs`);
+    console.log(`📚 Swagger is available at http://localhost:${PORT}`);
   });
 }
 
