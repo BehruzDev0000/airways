@@ -1,75 +1,38 @@
-name: Airways CI/CD (ubuntu)
+name: Deploy Backend
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout (metadata only)
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: npm
+          node-version: '18'
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.HOST }}          # masalan: 13.61.14.211
-          username: ${{ secrets.USERNAME }}  # masalan: ubuntu
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          timeout: 60s
-          command_timeout: 15m
-          script_stop: true
           script: |
-            set -euxo pipefail
-
-            APP_DIR=/home/${USER}/mock/samolyot/airways
-            REPO_SLUG="BehruzDev0000/uzairways"   # <-- o'zingizning user/repo ga moslang
-
-            # nvm (ixtiyoriy, bo'lsa)
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true
-            command -v nvm >/dev/null && nvm install 18 && nvm use 18 || true
-
-            sudo apt-get update -y
-            sudo apt-get install -y git
-
-            # Repo bor-yo'qligini tekshir
-            if [ -d "$APP_DIR/.git" ]; then
-              cd "$APP_DIR"
-              git remote set-url origin "https://x-access-token:${GITHUB_CLONE_TOKEN}@github.com/${REPO_SLUG}.git"
-              git fetch --all
-              git reset --hard origin/main
-            else
-              mkdir -p "$APP_DIR"
-              git clone --branch main --depth 1 \
-                "https://x-access-token:${GITHUB_CLONE_TOKEN}@github.com/${REPO_SLUG}.git" "$APP_DIR"
-              cd "$APP_DIR"
-            fi
-
-            # PM2 o'rnatilmagan bo'lsa
-            command -v pm2 >/dev/null || npm i -g pm2
-
-            npm ci --include=dev
+            cd /home/ubuntu/mock/samolyot/airways
+            git pull origin main
+            npm install --production
             npm run build
-            cp -f .env dist/.env
-
-            if pm2 list | grep -q 'glavni'; then
-              pm2 restart glavni
-            else
-              pm2 start dist/main.js --name glavni
-            fi
-
-            pm2 save
-            pm2 startup systemd -u $USER --hp $HOME | bash || true
-        env:
-          GITHUB_CLONE_TOKEN: ${{ secrets.GITHUB_CLONE_TOKEN }}
+            pm2 restart all
