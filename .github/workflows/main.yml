@@ -33,6 +33,7 @@ jobs:
           script: |
             cd /home/ubuntu/mock/samolyot/airways
             git pull origin main
-            npm install --production
+            npm install
             npm run build
+            cp .env dist/.env
             pm2 restart glavni
