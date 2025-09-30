@@ -104,11 +104,10 @@ export class AuthService {
       const { email, password } = dto;
       const secret = process.env.JWT_SECRET || 'dev_secret_change_me';
       const refreshSecret = process.env.JWT_REFRESH_SECRET || secret;
-      // Treat env values as DAYS, convert to seconds for JWT and ms for cookies
       const accessDays = Number(process.env.JWT_ACCESS_EXPIRES || 1);
       const refreshDays = Number(process.env.JWT_REFRESH_EXPIRES || 30);
-      const accessExpires = accessDays * 24 * 60 * 60; // seconds
-      const refreshExpires = refreshDays * 24 * 60 * 60; // seconds
+      const accessExpires = accessDays * 24 * 60 * 60;
+      const refreshExpires = refreshDays * 24 * 60 * 60;
 
       const admin = await this.adminModel.findOne({ where: { email } });
       if (admin) {
@@ -210,11 +209,10 @@ export class AuthService {
     const secret =
       process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || 'dev_secret_change_me';
     const accessSecret = process.env.JWT_SECRET || 'dev_secret_change_me';
-    // Treat env values as DAYS, convert to seconds for JWT and ms for cookies
     const accessDays = Number(process.env.JWT_ACCESS_EXPIRES || 1);
     const refreshDays = Number(process.env.JWT_REFRESH_EXPIRES || 30);
-    const accessExpires = accessDays * 24 * 60 * 60; // seconds
-    const refreshExpires = refreshDays * 24 * 60 * 60; // seconds
+    const accessExpires = accessDays * 24 * 60 * 60;
+    const refreshExpires = refreshDays * 24 * 60 * 60;
 
     try {
       const claims = verifyJwt(refreshToken, secret);

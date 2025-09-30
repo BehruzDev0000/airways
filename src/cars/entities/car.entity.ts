@@ -90,7 +90,6 @@ export class Car extends Model{
                     defaultValue: 0,
                 });
             }
-        // eslint-disable-next-line no-empty
-        } catch {}
+        } catch (error) {}
     }
 }

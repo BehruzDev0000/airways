@@ -53,7 +53,6 @@ export function verifyJwt(token: string, secret: string): JwtClaims {
     throw new Error('Invalid token format');
   }
   const [headerPart, payloadPart, signaturePart] = parts;
-  // verify signature
   const data = `${headerPart}.${payloadPart}`;
   const expected = createHmac('sha256', secret).update(data).digest();
   const expectedB64url = base64url(expected);
@@ -62,7 +61,6 @@ export function verifyJwt(token: string, secret: string): JwtClaims {
   if (a.length !== b.length || !timingSafeEqual(a, b)) {
     throw new Error('Invalid signature');
   }
-  // decode payload and check exp
   const json = decodePart(payloadPart);
   const claims: JwtClaims = JSON.parse(json);
   if (!claims || typeof claims !== 'object') {

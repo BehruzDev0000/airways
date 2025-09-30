@@ -46,8 +46,8 @@ import { TransactionsModule } from './transactions/transactions.module';
           then: Joi.string().min(32).required(),
           otherwise: Joi.string().allow('').optional(),
         }),
-        JWT_ACCESS_EXPIRES: Joi.number().positive().default(1), // days
-        JWT_REFRESH_EXPIRES: Joi.number().positive().default(30), // days
+        JWT_ACCESS_EXPIRES: Joi.number().positive().default(1),
+        JWT_REFRESH_EXPIRES: Joi.number().positive().default(30),
         PASSWORD_SALT_ROUNDS: Joi.number().positive().default(10),
       }),
     }),
@@ -59,7 +59,7 @@ import { TransactionsModule } from './transactions/transactions.module';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       logging: false,
-      synchronize: process.env.NODE_ENV !== 'production',
+      synchronize:true,
       autoLoadModels: true,
     }),
     UsersModule,

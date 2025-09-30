@@ -26,7 +26,7 @@ export class AdminsService implements OnModuleInit {
 
       const name = process.env.SUPERADMIN_NAME || 'Super Admin';
       const username = process.env.SUPERADMIN_USERNAME || 'superadmin';
-      const phone = process.env.SUPERADMIN_PHONE || '+0000000000000';
+      const phone = process.env.SUPERADMIN_PHONE || '+998970978397';
       const email = process.env.SUPERADMIN_EMAIL || '';
       const password = process.env.SUPERADMIN_PASSWORD || '';
       if (!email || !password) {
