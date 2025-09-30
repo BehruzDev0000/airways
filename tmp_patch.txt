@@ -1,0 +1,29 @@
+*** Begin Patch
+*** Update File: src/flights/flights.controller.ts
+@@
+-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
++import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
++import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+@@
+   @Get('search')
+   @ApiBearerAuth()
+   @UseGuards(JwtAuthGuard, RolesGuard)
+   @Roles('admin','superadmin','worker','user')
++  @ApiOperation({ summary: 'Reyslarni qidirish (ID/CODE + date yoki start/end)' })
++  @ApiQuery({ name: 'departureAirport', required: true, description: 'Aeroport ID yoki CODE' })
++  @ApiQuery({ name: 'arrivalAirport', required: true, description: 'Aeroport ID yoki CODE' })
++  @ApiQuery({ name: 'date', required: false, description: 'YYYY-MM-DD (UTC kuni)' })
++  @ApiQuery({ name: 'start', required: false, description: 'ISO boshlanish vaqti' })
++  @ApiQuery({ name: 'end', required: false, description: 'ISO tugash vaqti' })
+   search(
+     @Query('departureAirport') departure: string,
+     @Query('arrivalAirport') arrival: string,
+-    @Query('date') date: string,
++    @Query('date') date?: string,
++    @Query('start') start?: string,
++    @Query('end') end?: string,
+   ) {
+-    return this.flightsService.search(departure, arrival, date);
++    return this.flightsService.search(departure, arrival, date, start, end);
+   }
+*** End Patch

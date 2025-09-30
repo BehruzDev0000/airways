@@ -1,0 +1,28 @@
+export enum WorkerRole {
+  DIRECTOR = "Director",
+  MANAGER = "Manager",
+  OFFICE_STAFF = "Office Staff",
+  FINANCE_STAFF = "Finance Staff",
+  LEGAL_STAFF = "Legal Staff",
+  CHECK_IN_AGENT = "Check-in Agent",
+  BAGGAGE_HANDLER = "Baggage Handler",
+  CUSTOMER_SERVICE_AGENT = "Customer Service Agent",
+  SECURITY_STAFF = "Security Staff",
+  GATE_AGENT = "Gate Agent",
+  ENGINEER = "Engineer",
+  MECHANIC = "Mechanic",
+  FUELING_STAFF = "Fueling Staff",
+  CLEANING_CREW = "Cleaning Crew",
+  IMMIGRATION_OFFICER = "Immigration Officer",
+  CUSTOMS_OFFICER = "Customs Officer",
+  FIREFIGHTER = "Firefighter",
+  MEDICAL_TEAM = "Medical Team",
+  TRANSPORT_DRIVER = "Transport Driver",
+
+  CAPTAIN = "Captain",
+  FIRST_OFFICER = "First Officer",
+  PURSER = "Purser",
+  FLIGHT_ATTENDANT = "Flight Attendant",
+  ONBOARD_ENGINEER = "Onboard Engineer",
+  LOADMASTER = "Loadmaster"
+}
